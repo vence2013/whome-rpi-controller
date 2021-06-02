@@ -1,0 +1,22 @@
+{
+  "name": "whome_rpi-controller",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vence2013/whome_rpi-controller.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vence2013/whome_rpi-controller/issues"
+  },
+  "homepage": "https://github.com/vence2013/whome_rpi-controller#readme",
+  "dependencies": {
+    "koa": "^2.13.1"
+  }
+}
