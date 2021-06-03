@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/vence2013/whome_rpi-controller#readme",
   "dependencies": {
+    "bootstrap": "^5.0.1",
     "glob": "^7.1.7",
+    "jquery": "^3.6.0",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
     "koa-compose": "^4.1.0",
