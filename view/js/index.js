@@ -2,6 +2,23 @@ function direct_ctl(type)
 {
     $.get("/control/"+type, (res) => {
         console.log(res);
+
+        $(".direct_ctl").find(".btn")
+        .removeClass("btn-secondary btn-success");
+        $("#pump").addClass(res['pump'] ? 'btn-success' : 'btn-secondary');
+        $("#irrigate").addClass(res['irrigate'] ? 'btn-success' : 'btn-secondary');
+
+        /* 输入状态 */
+        $(".input_status").find(".alert")
+        .removeClass("alert-secondary alert-warning");
+
+        $("#waterfull")
+        .text(res['waterfull'] ? '水已满' : '水未满')
+        .addClass(res['waterfull'] ? 'alert-warning' : 'alert-secondary');
+
+        $("#soilwet")
+        .text(res['soilwet'] ? '湿度已够' : '湿度不足')
+        .addClass(res['soilwet'] ? 'alert-warning' : 'alert-secondary');
     });
 }
 

@@ -15,13 +15,21 @@
         <div class="container-fluid">
             <div class="card mt-3">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col p-1">
+                    <div class="row direct_ctl">
+                        <div class="col px-1">
                             <button type="button" class="btn btn-block btn-secondary" id="pump" onclick="direct_ctl('pump');">水泵开关</button>
                         </div>
                         <div class="col pl-0 pr-1">
                             <button type="button" class="btn btn-block btn-secondary" id="irrigate" onclick="direct_ctl('irrigate');">滴灌开关</button>
                         </div>                                        
+                    </div>
+                    <div class="row input_status">
+                        <div class="col px-1">
+                            <div class="alert alert-warning" role="alert" id="waterfull"></div>
+                        </div>
+                        <div class="col pl-0 pr-1">
+                            <div class="alert alert-warning" role="alert" id="soilwet"></div>
+                        </div>
                     </div>
                 </div>
             </div>
