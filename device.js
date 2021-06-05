@@ -7,7 +7,7 @@ function task_cb()
     setTimeout(task_cb, 1000);
 }
 
-exports.init = async () =>
+exports.setup = async () =>
 {
     rpio.open(27, rpio.INPUT);
     rpio.open(28, rpio.INPUT);

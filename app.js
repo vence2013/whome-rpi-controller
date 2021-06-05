@@ -11,8 +11,6 @@ const compose   = require('koa-compose');
 
 var Device = require("./device");
 
-Device.setup();
-
 const app = new Koa();
 
 /* 加载子网站 */
@@ -62,7 +60,7 @@ app
 .use(Logger())
 .use(loads());
 
-
+Device.setup();
 
 app.listen(8000);
 console.log("Server Listening at 8000!");
