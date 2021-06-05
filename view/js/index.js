@@ -26,6 +26,14 @@ function display_status(status)
     $("#soilwet")
     .text(status['soilwet'] ? '湿度已够' : '湿度不足')
     .addClass(status['soilwet'] ? 'alert-warning' : 'alert-secondary');
+
+    /* 自动过滤状态*/
+    $("#autofilter")
+    .removeClass("btn-secondary btn-success")
+    .addClass(status['stop'] ? 'btn-secondary' : 'btn-success');
+
+    $("#current_time").text(status['now']);
+    $("#start_time").text(status['start']);
 }
 
 function query_status()

@@ -1,4 +1,5 @@
 const rpio = require('rpio');
+const moment = require('moment');
 
 
 const Pindef = {
@@ -9,18 +10,8 @@ const Pindef = {
 
 /* Direct Control */
 
-var Pinval = {};
-
-exports.toggle = toggle;
-function toggle( type )
-{
-    let pin = Pindef[ type ];
-    let val = Pinval[ type ];
-
-    /* toggle */
-    Pinval[ type ] = !val;
-    rpio.write(pin, val ? rpio.LOW : rpio.HIGH);
-}
+/* inital data structure */
+var Pinval = {'pump':false, 'irrigate':false};
 
 exports.set = set;
 function set( type )
@@ -40,21 +31,48 @@ function clear( type )
     rpio.write(pin, rpio.LOW);
 }
 
+exports.toggle = toggle;
+function toggle( type )
+{
+    let val = Pinval[ type ];
+
+    val ?  clear(type) : set(type);
+}
+
+
 /* Auto Filter Process */
 
-var Autofilter_ctl = {};
-
-exports.autofilter_toggle = autofilter_toggle;
-function autofilter_toggle()
-{
-
-}
+/* inital data structure */
+var Autofilter_ctl = {
+    'seconds':0, 
+    'start':null, // process start time
+    'stop':true   // during the process, soil is wet, no need to continue
+};
 
 exports.autofilter_start = autofilter_start;
 function autofilter_start()
 {
-    
-    //Autofilter_ctl['start'] = 
+    Autofilter_ctl['seconds'] = 0;
+    Autofilter_ctl['start']   = moment().format('hh:mm:ss');
+    Autofilter_ctl['stop']    = false;
+
+    let iswet = rpio.read(Pindef['soilwet']) ? false : true;
+    if (iswet) 
+        autofilter_stop();        
+}
+
+exports.autofilter_stop = autofilter_stop;
+function autofilter_stop()
+{
+    clear('irrigate');
+
+    Autofilter_ctl['stop'] = true;
+}
+
+exports.autofilter_toggle = autofilter_toggle;
+function autofilter_toggle()
+{
+    Autofilter_ctl['stop'] ? autofilter_start() : autofilter_stop();
 }
 
 exports.status = () =>
@@ -67,7 +85,10 @@ exports.status = () =>
         'pump':Pinval['pump'], 
         'irrigate':Pinval['irrigate'], 
         'waterfull':isfull, 
-        'soilwet':iswet
+        'soilwet':iswet,
+        'now'  :moment().format('hh:mm:ss'),
+        'start':Autofilter_ctl['start'],
+        'stop':Autofilter_ctl['stop'],
     };
 }
 
