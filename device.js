@@ -7,7 +7,8 @@ const Pindef = {
 };
 var Pinval = {};
 
-exports.toggle = (type) =>
+exports.toggle = toggle;
+function toggle(type)
 {
     let pin = Pindef[ type ];
     let val = Pinval[ type ];
@@ -29,7 +30,14 @@ exports.status = () =>
 
 function task_cb()
 {
-    console.log('task callback');
+    let isfull = rpio.read(Pindef['waterfull']) ? false : true;
+
+    /* water is full, close pump */
+    if (Pinval['pump'])
+    {
+        if (isfull)
+            toggle('pump');
+    }
 
     setTimeout(task_cb, 1000);
 }
