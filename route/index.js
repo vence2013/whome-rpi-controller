@@ -11,9 +11,8 @@ router.get('/control/:type', async (ctx)=>{
     let params = ctx.params;    
     let type = params.type;
 
-    console.log(type);
-    
-    ctx.body = 'SUCCESS';
+    Device.toggle( type );    
+    ctx.body = Device.status();;
 })
 
 /*
