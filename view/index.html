@@ -10,28 +10,55 @@
         <div class="row">
             <div class="col-4 border rounded m-2">
                 <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="gpio1" onclick="gpio_check(16);">
-                    <label class="custom-control-label" for="gpio1">GPIO x</label>
+                    <input type="checkbox" class="custom-control-input" id="ctl1" onclick="gpio_set(15);">
+                    <label class="custom-control-label" for="ctl1">水泵开关</label>
                 </div>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="ctl2" onclick="gpio_set(16);">
+                    <label class="custom-control-label" for="ctl2">滴灌阀门</label>
+                </div>     
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="ctl3" onclick="gpio_set(31);">
+                    <label class="custom-control-label" for="ctl2">测试控制</label>
+                </div>                               
             </div>
             <div class="col mr-2 mt-2">
-                <%=name%>
+                <%=name%><br />
+                水位检测：<span id="water"></span><br />
+                土壤检测：<span id="solid"></span>
             </div>
         </div>
     </div>
 </body>
 </html>
 <script>
-function gpio_check(gpiox)
+function gpio_set(pin)
 {
-    let val = $("#gpio1").is(':checked') ? 1 : 0;
-    console.log(gpiox, val);
-    $.get("/gpio/"+gpiox+"?set="+val, (res) => {
+    let val;
+
+    if (15 == pin)
+        val = $("#ctl1").is(':checked') ? 1 : 0;
+    else if (16 == pin)
+        val = $("#ctl2").is(':checked') ? 1 : 0;
+    else 
+        val = $("#ctl3").is(':checked') ? 1 : 0;
+
+    console.log(pin, val);
+    $.get("/gpio/"+pin+"?set="+val, (res) => {
         console.log(res);
     });
 }
 
-$(document).ready(() => {
+function status_query()
+{
+    $.get("/status", (res) => {
+        console.log(res);
+        $("#water").text(res.water);
+        $("#solid").text(res.solid);
+    });
+}
 
+$(document).ready(() => {
+    window.setInterval(status_query, 3000);
 });
 </script>
