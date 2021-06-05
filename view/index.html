@@ -1,53 +1,56 @@
+<!doctype html>
 <html>
-<head>
-    <title>rpi controller</title>
-    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>rpi controller</title>
+        <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+        <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
 
-    <link rel="stylesheet" href="view/css/index.css" />
-    <script src="view/js/index.js"></script>
-</head>
+        <link rel="stylesheet" href="view/css/index.css" />
+        <script src="view/js/index.js"></script>
+    </head>
 
-<body>
-    <div class="container-fluid">
-        <div class="row p-3">
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <button type="button" class="btn btn-block btn-secondary">水泵开关</button>
+    <body>
+        <div class="container-fluid">
+            <div class="row p-3">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-secondary">水泵开关</button>
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-block btn-secondary">滴灌开关</button>
+                        </div>                                        
                     </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-block btn-secondary">滴灌开关</button>
-                    </div>                                        
+                </div>
+                <div class="col">
+                    士大夫大师傅
                 </div>
             </div>
-            <div class="col">
-                士大夫大师傅
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4 border rounded m-2">
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="ctl1" onclick="gpio_set(15);">
-                    <label class="custom-control-label" for="ctl1">水泵开关</label>
+            <div class="row">
+                <div class="col-4 border rounded m-2">
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="ctl1" onclick="gpio_set(15);">
+                        <label class="custom-control-label" for="ctl1">水泵开关</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="ctl2" onclick="gpio_set(16);">
+                        <label class="custom-control-label" for="ctl2">滴灌阀门</label>
+                    </div>     
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="ctl3" onclick="gpio_set(31);">
+                        <label class="custom-control-label" for="ctl2">测试控制</label>
+                    </div>                               
                 </div>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="ctl2" onclick="gpio_set(16);">
-                    <label class="custom-control-label" for="ctl2">滴灌阀门</label>
-                </div>     
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="ctl3" onclick="gpio_set(31);">
-                    <label class="custom-control-label" for="ctl2">测试控制</label>
-                </div>                               
-            </div>
-            <div class="col mr-2 mt-2">
-                <%=name%><br />
-                水位检测：<span id="water"></span><br />
-                土壤检测：<span id="solid"></span>
+                <div class="col mr-2 mt-2">
+                    <%=name%><br />
+                    水位检测：<span id="water"></span><br />
+                    土壤检测：<span id="solid"></span>
+                </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>
 <script>
 $(document).ready(() => {
