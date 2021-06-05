@@ -19,8 +19,9 @@ exports.toggle = (type) =>
 
 exports.status = () =>
 {
-    let isfull = rpio.read(Pindef['waterfull']);
-    let iswet  = rpio.read(Pindef['soilwet']);
+    /* active at low */
+    let isfull = rpio.read(Pindef['waterfull']) ? false : true;
+    let iswet  = rpio.read(Pindef['soilwet']) ? false : true;
 
     return {'pump':Pinval['pump'], 'irrigate':Pinval['irrigate'], 'waterfull':isfull, 'soilwet':iswet};
 }
