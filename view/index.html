@@ -2,10 +2,10 @@
 <head>
     <title>rpi controller</title>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
 
-    <link rel="stylesheet" href="./css/index.css" />
-    <script src="./js/index.js"></script>
+    <link rel="stylesheet" href="view/css/index.css" />
+    <script src="view/js/index.js"></script>
 </head>
 
 <body>
@@ -50,33 +50,7 @@
 </body>
 </html>
 <script>
-function gpio_set(pin)
-{
-    let val;
-
-    if (15 == pin)
-        val = $("#ctl1").is(':checked') ? 1 : 0;
-    else if (16 == pin)
-        val = $("#ctl2").is(':checked') ? 1 : 0;
-    else 
-        val = $("#ctl3").is(':checked') ? 1 : 0;
-
-    console.log(pin, val);
-    $.get("/gpio/"+pin+"?set="+val, (res) => {
-        console.log(res);
-    });
-}
-
-function status_query()
-{
-    $.get("/status", (res) => {
-        console.log(res);
-        $("#water").text(res.water);
-        $("#solid").text(res.solid);
-    });
-}
-
 $(document).ready(() => {
-    window.setInterval(status_query, 3000);
+    //window.setInterval(status_query, 3000);
 });
 </script>
