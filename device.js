@@ -8,7 +8,7 @@ const Pindef = {
 var Pinval = {};
 
 exports.toggle = toggle;
-function toggle(type)
+function toggle( type )
 {
     let pin = Pindef[ type ];
     let val = Pinval[ type ];
@@ -16,6 +16,24 @@ function toggle(type)
     /* toggle */
     Pinval[ type ] = !val;
     rpio.write(pin, val ? rpio.LOW : rpio.HIGH);
+}
+
+exports.set = set;
+function set( type )
+{
+    let pin = Pindef[ type ];
+
+    Pinval[ type ] = true;
+    rpio.write(pin, rpio.HIGH);
+}
+
+exports.clear = clear;
+function clear( type )
+{
+    let pin = Pindef[ type ];
+
+    Pinval[ type ] = false;
+    rpio.write(pin, rpio.LOW);
 }
 
 exports.status = () =>
@@ -36,7 +54,7 @@ function task_cb()
     if (Pinval['pump'])
     {
         if (isfull)
-            toggle('pump');
+            clear('pump');
     }
 
     setTimeout(task_cb, 1000);
@@ -44,8 +62,8 @@ function task_cb()
 
 exports.setup = async () =>
 {
-    Pinval['pump']     = 0;
-    Pinval['irrigate'] = 0;
+    Pinval['pump']     = true;
+    Pinval['irrigate'] = true;
 
     rpio.open(Pindef['waterfull'], rpio.INPUT);
     rpio.open(Pindef['soilwet'],   rpio.INPUT);
