@@ -9,20 +9,9 @@ const StaticServer = require('koa-static-server');
 const glob      = require('glob'); 
 const compose   = require('koa-compose');
 
-var rpio = require('rpio');
+var Device = require("./device");
 
-function dev_setup()
-{
-    rpio.open(15, rpio.OUTPUT, rpio.LOW);
-    rpio.open(16, rpio.OUTPUT, rpio.LOW);
-    rpio.open(31, rpio.OUTPUT, rpio.LOW);
-    rpio.open(27, rpio.INPUT);
-    rpio.open(28, rpio.INPUT);
-
-    console.log("Device Setup finished!");
-}
-dev_setup();
-
+Device.setup();
 
 const app = new Koa();
 
@@ -72,6 +61,8 @@ app
 .use(Views(__dirname, { map: {html: 'underscore'} }))
 .use(Logger())
 .use(loads());
+
+
 
 app.listen(8000);
 console.log("Server Listening at 8000!");
