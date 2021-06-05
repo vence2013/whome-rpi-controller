@@ -9,7 +9,7 @@ const StaticServer = require('koa-static-server');
 const glob      = require('glob'); 
 const compose   = require('koa-compose');
 
-var Device = require("./device");
+const Device = require("./device");
 
 const app = new Koa();
 

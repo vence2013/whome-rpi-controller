@@ -1,3 +1,10 @@
+function direct_ctl(type)
+{
+    $.get("/control/"+type, (res) => {
+        console.log(res);
+    });
+}
+
 function gpio_set(pin)
 {
     let val;
