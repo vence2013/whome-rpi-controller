@@ -5,6 +5,10 @@ const Pindef = {
     'pump':15, 'irrigate':16,    /* output */
     'waterfull':27, 'soilwet':28 /* input  */
 };
+
+
+/* Direct Control */
+
 var Pinval = {};
 
 exports.toggle = toggle;
@@ -36,13 +40,35 @@ function clear( type )
     rpio.write(pin, rpio.LOW);
 }
 
+/* Auto Filter Process */
+
+var Autofilter_ctl = {};
+
+exports.autofilter_toggle = autofilter_toggle;
+function autofilter_toggle()
+{
+
+}
+
+exports.autofilter_start = autofilter_start;
+function autofilter_start()
+{
+    
+    //Autofilter_ctl['start'] = 
+}
+
 exports.status = () =>
 {
     /* active at low */
     let isfull = rpio.read(Pindef['waterfull']) ? false : true;
     let iswet  = rpio.read(Pindef['soilwet']) ? false : true;
 
-    return {'pump':Pinval['pump'], 'irrigate':Pinval['irrigate'], 'waterfull':isfull, 'soilwet':iswet};
+    return {
+        'pump':Pinval['pump'], 
+        'irrigate':Pinval['irrigate'], 
+        'waterfull':isfull, 
+        'soilwet':iswet
+    };
 }
 
 
@@ -62,14 +88,14 @@ function task_cb()
 
 exports.setup = async () =>
 {
-    Pinval['pump']     = true;
-    Pinval['irrigate'] = true;
-
     rpio.open(Pindef['waterfull'], rpio.INPUT);
     rpio.open(Pindef['soilwet'],   rpio.INPUT);
 
     rpio.open(Pindef['pump'],     rpio.OUTPUT, rpio.LOW);
     rpio.open(Pindef['irrigate'], rpio.OUTPUT, rpio.LOW);
+
+    clear('pump');
+    clear('irrigate');
 
     setTimeout(task_cb, 1000);
 

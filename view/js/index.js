@@ -3,6 +3,11 @@ function direct_ctl(type)
     $.get("/control/"+type, (res) => { display_status(res); });
 }
 
+function autofilter()
+{
+    $.get("/autofilter", (res) => { display_status(res); });
+}
+
 function display_status(status)
 {
     $(".direct_ctl").find(".btn")
