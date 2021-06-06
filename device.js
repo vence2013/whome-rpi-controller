@@ -1,5 +1,6 @@
 const rpio = require('rpio');
 const moment = require('moment');
+const schedule = require('node-schedule');
 
 
 const Pindef = {
@@ -8,10 +9,27 @@ const Pindef = {
 };
 
 
-/* Direct Control */
+/****************************** Direct Control ******************************/
 
 /* inital data structure */
 var Pinval = {'pump':false, 'irrigate':false};
+
+
+function fullcheck_cb()
+{
+    let isfull = rpio.read(Pindef['waterfull']) ? false : true;
+
+    /* water is full, close pump */
+    if (Pinval['pump'])
+    {
+        if (isfull)
+            clear('pump');
+    }
+
+    /* open if pump opered */
+    if (Pinval['pump'])
+        setTimeout(fullcheck_cb, 1000);
+}
 
 exports.set = set;
 function set( type )
@@ -20,6 +38,8 @@ function set( type )
 
     Pinval[ type ] = true;
     rpio.write(pin, rpio.HIGH);
+
+    setTimeout(fullcheck_cb, 1000);
 }
 
 exports.clear = clear;
@@ -40,7 +60,7 @@ function toggle( type )
 }
 
 
-/* Auto Filter Process */
+/************************* Auto Filter Process *******************************/
 
 /* inital data structure */
 var Autofilter_ctl = {
@@ -93,20 +113,6 @@ exports.status = () =>
 }
 
 
-function task_cb()
-{
-    let isfull = rpio.read(Pindef['waterfull']) ? false : true;
-
-    /* water is full, close pump */
-    if (Pinval['pump'])
-    {
-        if (isfull)
-            clear('pump');
-    }
-
-    setTimeout(task_cb, 1000);
-}
-
 exports.setup = async () =>
 {
     rpio.open(Pindef['waterfull'], rpio.INPUT);
@@ -117,8 +123,7 @@ exports.setup = async () =>
 
     clear('pump');
     clear('irrigate');
-
-    setTimeout(task_cb, 1000);
+    autofilter_stop();
 
     console.log('Device setup finished!');
 }
