@@ -17,7 +17,7 @@ router.get('/control/:type', async (ctx) =>
     ctx.body = Device.status();
 })
 
-router.get('/autofilter', async (ctx) => 
+router.get('/auto', async (ctx) => 
 {
     Device.autofilter_toggle();    
     ctx.body = Device.status();

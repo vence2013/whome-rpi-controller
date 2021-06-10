@@ -9,7 +9,7 @@ const Pindef = {
 };
 
 
-/****************************** Direct Control ******************************/
+/*------------------------------ Direct Control ----------------------------*/
 
 /* inital data structure */
 var Pinval = {'pump':false, 'irrigate':false};
@@ -60,39 +60,55 @@ function toggle( type )
 }
 
 
-/************************* Auto Filter Process *******************************/
+/*------------------------------- Auto Process ------------------------------*/
+
+const Period_sec = 30; //
+const Period_max = 60; // 60 * 30 seconds = 30 min
 
 /* inital data structure */
-var Autofilter_ctl = {
-    'seconds':0, 
+var Auto_ctl = {
+    'cnt':0, 
     'start':null, // process start time
-    'stop':true   // during the process, soil is wet, no need to continue
+    'istop':true   // during the process, soil is wet, no need to continue
 };
 
-exports.autofilter_start = autofilter_start;
-function autofilter_start()
+function auto_excute()
 {
-    Autofilter_ctl['seconds'] = 0;
-    Autofilter_ctl['start']   = moment().format('hh:mm:ss');
-    Autofilter_ctl['stop']    = false;
-
     let iswet = rpio.read(Pindef['soilwet']) ? false : true;
-    if (iswet) 
-        autofilter_stop();        
+
+    set('pump');
+    iswet ? clear('irrigate') : set('irrigate');
+
+    Auto_ctl['cnt']++;
+    if (Auto_ctl['cnt'] < Period_max)
+        setTimeout(auto_excute, Period_sec * 1000);
+    else
+        auto_stop();
 }
 
-exports.autofilter_stop = autofilter_stop;
-function autofilter_stop()
+exports.auto_start = auto_start;
+function auto_start()
 {
+    Auto_ctl['cnt'] = 0;
+    Auto_ctl['istop'] = false;
+    Auto_ctl['start'] = moment().format('hh:mm:ss');
+
+    auto_excute();
+}
+
+exports.auto_stop = auto_stop;
+function auto_stop()
+{
+    clear('pump');
     clear('irrigate');
 
-    Autofilter_ctl['stop'] = true;
+    Auto_ctl['istop'] = true;
 }
 
-exports.autofilter_toggle = autofilter_toggle;
-function autofilter_toggle()
+exports.auto_toggle = auto_toggle;
+function auto_toggle()
 {
-    Autofilter_ctl['stop'] ? autofilter_start() : autofilter_stop();
+    Auto_ctl['istop'] ? auto_start() : auto_stop();
 }
 
 exports.status = () =>
@@ -107,8 +123,8 @@ exports.status = () =>
         'waterfull':isfull, 
         'soilwet':iswet,
         'now'  :moment().format('hh:mm:ss'),
-        'start':Autofilter_ctl['start'],
-        'stop':Autofilter_ctl['stop'],
+        'start':Auto_ctl['start'],
+        'istop':Auto_ctl['istop'],
     };
 }
 
@@ -123,7 +139,6 @@ exports.setup = async () =>
 
     clear('pump');
     clear('irrigate');
-    autofilter_stop();
 
     console.log('Device setup finished!');
 }

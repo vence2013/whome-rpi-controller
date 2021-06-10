@@ -3,9 +3,9 @@ function direct_ctl(type)
     $.get("/control/"+type, (res) => { display_status(res); });
 }
 
-function autofilter()
+function auto()
 {
-    $.get("/autofilter", (res) => { display_status(res); });
+    $.get("/auto", (res) => { display_status(res); });
 }
 
 function display_status(status)
@@ -30,7 +30,7 @@ function display_status(status)
     /* 自动过滤状态*/
     $("#autofilter")
     .removeClass("btn-secondary btn-success")
-    .addClass(status['stop'] ? 'btn-secondary' : 'btn-success');
+    .addClass(status['istop'] ? 'btn-secondary' : 'btn-success');
 
     $("#current_time").text(status['now']);
     $("#start_time").text(status['start']);
