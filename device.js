@@ -62,8 +62,8 @@ function toggle( type )
 
 /*------------------------------- Auto Process ------------------------------*/
 
-const Period_sec = 30; //
-const Period_max = 60; // 60 * 30 seconds = 30 min
+const Period_sec = 180; // 3 min
+const Period_max = 20;  // 3 * 20 seconds = 60 min
 
 /* inital data structure */
 var Auto_ctl = {
@@ -74,10 +74,10 @@ var Auto_ctl = {
 
 function auto_excute()
 {
-    let iswet = rpio.read(Pindef['soilwet']) ? false : true;
+    //let iswet = rpio.read(Pindef['soilwet']) ? false : true;
 
     set('pump');
-    iswet ? clear('irrigate') : set('irrigate');
+    (Auto_ctl['cnt'] < 2) ? clear('irrigate') : set('irrigate');
 
     Auto_ctl['cnt']++;
     if (Auto_ctl['cnt'] < Period_max)
