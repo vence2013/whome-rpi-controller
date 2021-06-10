@@ -36,3 +36,13 @@ PIN16: 滴灌阀门
 
 系统启动时启动服务
 
+[Linux设置nodejs开机自启动(示例代码)](https://www.136.la/javascript/show-31954.html)
+~~~
+pi@raspberrypi:~/whome_rpi-controller $ sudo npm i pm2 -g
+sudo pm2 start app.js --name="garden"
+sudo pm2 list
+sudo pm2 save
+sudo pm2 startup
+~~~
+> 备注：一定要用root用户创建service，不然程序可能会遇到“Permission denied”错误。
+
