@@ -74,10 +74,10 @@ var Auto_ctl = {
 
 function auto_excute()
 {
-    //let iswet = rpio.read(Pindef['soilwet']) ? false : true;
+    let iswet = rpio.read(Pindef['soilwet']) ? false : true;
 
     set('pump');
-    (Auto_ctl['cnt'] < 2) ? clear('irrigate') : set('irrigate');
+    ((Auto_ctl['cnt'] < 2) && !iswet) ? set('irrigate') : clear('irrigate');
 
     Auto_ctl['cnt']++;
     if (Auto_ctl['cnt'] < Period_max)
