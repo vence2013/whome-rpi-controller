@@ -140,9 +140,13 @@ exports.setup = async () =>
     clear('pump');
     clear('irrigate');
 
-    schedule.scheduleJob('0 * * * * *', () => {
+    schedule.scheduleJob('0 0 * * *', () => {
         let hour = (new Date()).getHours();
-        console.log('The answer to life, the universe, and everything!', hour);
+        if ((hour >= 6) || (hour <= 18)) 
+        {
+            if ((hour - 6) % 4 == 0)
+                auto_start();
+        }
     });
 
     console.log('Device setup finished!');
