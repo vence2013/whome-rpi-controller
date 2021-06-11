@@ -140,5 +140,9 @@ exports.setup = async () =>
     clear('pump');
     clear('irrigate');
 
+    schedule.scheduleJob('30 * * * * *', function(){
+        console.log('The answer to life, the universe, and everything!');
+    });
+
     console.log('Device setup finished!');
 }
