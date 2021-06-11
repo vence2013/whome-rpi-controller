@@ -46,3 +46,10 @@ sudo pm2 startup
 ~~~
 > 备注：一定要用root用户创建service，不然程序可能会遇到“Permission denied”错误。
 
+
+
+[树莓派系统时间同步](https://www.cnblogs.com/imfanqi/p/4396292.html)
+~~~
+sudo timedatectl set-ntp true
+sudo dpkg-reconfigure tzdata
+~~~
